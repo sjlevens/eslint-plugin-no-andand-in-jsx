@@ -13,9 +13,16 @@ module.exports = {
   create(context) {
     return {
       JSXExpressionContainer(node) {
+        // Early exit if the node's expression is not a LogicalExpression with '&&'
         if (
-          node.expression.type === "LogicalExpression" &&
-          node.expression.operator === "&&"
+          node.expression.type !== "LogicalExpression" ||
+          node.expression.operator !== "&&"
+        )
+          return;
+
+        if (
+          node.expression.right.type === "JSXElement" ||
+          node.expression.right.type === "JSXFragment"
         ) {
           context.report({
             node,

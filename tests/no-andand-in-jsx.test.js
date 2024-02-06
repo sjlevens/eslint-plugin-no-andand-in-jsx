@@ -29,10 +29,26 @@ ruleTester.run("no-andand-in-jsx", rule, {
         return <div>{result}</div>; 
       }`,
     },
-
     // Logical AND in expressions not returning JSX
     {
       code: "const isEnabled = featureFlag && user.isAdmin;",
+    },
+    // Logic inside jsx not for rendering
+    {
+      code: `
+        <Component prop={loading && isVisible}>
+          test
+        </Component>
+      `,
+    },
+    // This code technically returns JSX but due to limits on the static analysis we are going to be permissive here
+    {
+      code: `
+      function Component() {
+        const getContent = () => <div>jsx</div>;
+
+        return <div>{condition && getContent()}</div>;
+      }`,
     },
   ],
   invalid: [
@@ -69,11 +85,6 @@ ruleTester.run("no-andand-in-jsx", rule, {
       errors: [{ message: "Do not use && for conditional rendering in JSX." }],
       output:
         "<div>{condition && condition2 && (condition3 || condition4) ? <Child /> : null}</div>",
-    },
-    {
-      code: `<div>{condition && getContent()}</div>;`,
-      errors: [{ message: "Do not use && for conditional rendering in JSX." }],
-      output: "<div>{condition ? getContent() : null}</div>;",
     },
     {
       code: "<div>{condition && (condition2 || condition3 || condition4) && condition5 && <Child />}</div>",
