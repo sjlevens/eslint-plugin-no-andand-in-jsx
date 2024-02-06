@@ -1,11 +1,11 @@
 {
   "name": "eslint-plugin-no-andand-in-jsx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "eslint plugin to restric the usage of && in JSX in order to reduce 🦶🔫 ",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sjlevens/eslint-plugin-no-andand-in-jsx"
+    "url": "git+https://github.com/sjlevens/eslint-plugin-no-andand-in-jsx.git"
   },
   "scripts": {
     "test": "jest"
